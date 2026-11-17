@@ -1,272 +1,419 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Answer to unlock</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --paper: #e9efe7;
-    --ink: #1c3a33;
-    --muted: #5b7068;
-    --line: #b9c8bf;
-    --accent: #e4572e;
-    --good: #2f7d55;
-    --bad: #b3341b;
-    --panel: #f6f9f4;
-  }
-  @media (prefers-color-scheme: dark) {
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Answer to unlock</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap"
+    rel="stylesheet">
+  <style>
     :root {
-      --paper: #14221e;
-      --ink: #e4eee8;
-      --muted: #9bb0a6;
-      --line: #2f4a41;
-      --accent: #ff7a50;
-      --good: #6cd09a;
-      --bad: #ff8d74;
-      --panel: #1b2d28;
+      --paper: #e9efe7;
+      --ink: #1c3a33;
+      --muted: #5b7068;
+      --line: #b9c8bf;
+      --accent: #e4572e;
+      --good: #2f7d55;
+      --bad: #b3341b;
+      --panel: #f6f9f4;
     }
-  }
-  * { box-sizing: border-box; }
-  html { background: var(--paper); }
-  body {
-    margin: 0;
-    font-family: "Bricolage Grotesque", system-ui, -apple-system, "Segoe UI", sans-serif;
-    color: var(--ink);
-    line-height: 1.5;
-    padding: 2.5rem 1.25rem 4rem;
-  }
-  main { max-width: 38rem; margin: 0 auto; }
-  h1 {
-    font-size: clamp(2rem, 7vw, 3.1rem);
-    line-height: 1.05;
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    margin: 0 0 0.6rem;
-  }
-  .intro { color: var(--muted); margin: 0 0 2rem; max-width: 34rem; }
 
-  /* The frame: covered until every answer is right */
-  .frame {
-    position: relative;
-    aspect-ratio: 4 / 3;
-    border: 2px solid var(--ink);
-    border-radius: 6px;
-    overflow: hidden;
-    margin-bottom: 2.25rem;
-    background: var(--panel);
-  }
-  .frame img {
-    position: absolute; inset: 0;
-    width: 100%; height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-  .cover {
-    position: absolute; inset: 0;
-    display: grid; place-items: center;
-    background:
-      repeating-linear-gradient(135deg, transparent 0 14px, color-mix(in srgb, var(--ink) 9%, transparent) 14px 16px),
-      var(--panel);
-    color: var(--muted);
-    text-align: center;
-    transition: transform 1.1s cubic-bezier(.7, 0, .2, 1);
-  }
-  .cover span { font-weight: 600; padding: 0 1rem; }
-  .frame.open .cover { transform: translateY(-101%); }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --paper: #14221e;
+        --ink: #e4eee8;
+        --muted: #9bb0a6;
+        --line: #2f4a41;
+        --accent: #ff7a50;
+        --good: #6cd09a;
+        --bad: #ff8d74;
+        --panel: #1b2d28;
+      }
+    }
 
-  form { display: grid; gap: 1.6rem; }
-  fieldset { border: 0; padding: 0; margin: 0; }
-  legend, .q-label {
-    font-weight: 600;
-    font-size: 1.1rem;
-    padding: 0;
-    margin-bottom: 0.6rem;
-    display: block;
-  }
-  .q { padding-left: 1rem; border-left: 3px solid var(--line); transition: border-color .2s; }
-  .q.right { border-left-color: var(--good); }
-  .q.wrong { border-left-color: var(--bad); }
+    * {
+      box-sizing: border-box;
+    }
 
-  input[type="text"] {
-    width: 100%;
-    font: inherit;
-    color: inherit;
-    background: var(--panel);
-    border: 1.5px solid var(--line);
-    border-radius: 4px;
-    padding: 0.6rem 0.75rem;
-  }
-  .choice {
-    display: flex; align-items: center; gap: 0.6rem;
-    padding: 0.45rem 0;
-    cursor: pointer;
-  }
-  .choice input { accent-color: var(--accent); width: 1.1rem; height: 1.1rem; }
+    html {
+      background: var(--paper);
+    }
 
-  :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+    body {
+      margin: 0;
+      font-family: "Bricolage Grotesque", system-ui, -apple-system, "Segoe UI", sans-serif;
+      color: var(--ink);
+      line-height: 1.5;
+      padding: 2.5rem 1.25rem 4rem;
+    }
 
-  .note { min-height: 1.4em; font-size: 0.95rem; margin: 0.4rem 0 0; }
-  .right .note { color: var(--good); }
-  .wrong .note { color: var(--bad); }
+    main {
+      max-width: 38rem;
+      margin: 0 auto;
+    }
 
-  button {
-    font: inherit; font-weight: 700;
-    background: var(--ink); color: var(--paper);
-    border: 0; border-radius: 4px;
-    padding: 0.8rem 1.5rem;
-    cursor: pointer;
-    justify-self: start;
-  }
-  button:hover { background: var(--accent); color: #fff; }
-  #result { margin: 0; font-weight: 600; min-height: 1.5em; }
+    h1 {
+      font-size: clamp(2rem, 7vw, 3.1rem);
+      line-height: 1.05;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin: 0 0 0.6rem;
+    }
 
-  @media (prefers-reduced-motion: reduce) {
-    .cover { transition: none; }
-  }
-</style>
+    .intro {
+      color: var(--muted);
+      margin: 0 0 2rem;
+      max-width: 34rem;
+    }
+
+    /* The frame: covered until every answer is right */
+    .frame {
+      position: relative;
+      aspect-ratio: 4 / 3;
+      border: 2px solid var(--ink);
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 2.25rem;
+      background: var(--panel);
+    }
+
+    .frame img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .cover {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      background:
+        repeating-linear-gradient(135deg, transparent 0 14px, color-mix(in srgb, var(--ink) 9%, transparent) 14px 16px),
+        var(--panel);
+      color: var(--muted);
+      text-align: center;
+      transition: transform 1.1s cubic-bezier(.7, 0, .2, 1);
+    }
+
+    .cover span {
+      font-weight: 600;
+      padding: 0 1rem;
+    }
+
+    .frame.open .cover {
+      transform: translateY(-101%);
+    }
+
+    form {
+      display: grid;
+      gap: 1.6rem;
+    }
+
+    fieldset {
+      border: 0;
+      padding: 0;
+      margin: 0;
+    }
+
+    legend,
+    .q-label {
+      font-weight: 600;
+      font-size: 1.1rem;
+      padding: 0;
+      margin-bottom: 0.6rem;
+      display: block;
+    }
+
+    .q {
+      padding-left: 1rem;
+      border-left: 3px solid var(--line);
+      transition: border-color .2s;
+    }
+
+    .q.right {
+      border-left-color: var(--good);
+    }
+
+    .q.wrong {
+      border-left-color: var(--bad);
+    }
+
+    input[type="text"] {
+      width: 100%;
+      font: inherit;
+      color: inherit;
+      background: var(--panel);
+      border: 1.5px solid var(--line);
+      border-radius: 4px;
+      padding: 0.6rem 0.75rem;
+    }
+
+    .choice {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.45rem 0;
+      cursor: pointer;
+    }
+
+    .choice input {
+      accent-color: var(--accent);
+      width: 1.1rem;
+      height: 1.1rem;
+    }
+
+    :focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .note {
+      min-height: 1.4em;
+      font-size: 0.95rem;
+      margin: 0.4rem 0 0;
+    }
+
+    .right .note {
+      color: var(--good);
+    }
+
+    .wrong .note {
+      color: var(--bad);
+    }
+
+    button {
+      font: inherit;
+      font-weight: 700;
+      background: var(--ink);
+      color: var(--paper);
+      border: 0;
+      border-radius: 4px;
+      padding: 0.8rem 1.5rem;
+      cursor: pointer;
+      justify-self: start;
+    }
+
+    button:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    #result {
+      margin: 0;
+      font-weight: 600;
+      min-height: 1.5em;
+    }
+
+    .hint-btn {
+      background: none;
+      color: var(--muted);
+      border: 1.5px dashed var(--line);
+      padding: 0.3rem 0.8rem;
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+    }
+
+    .hint-btn:hover {
+      background: none;
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .hint-text {
+      margin: 0.5rem 0 0;
+      padding: 0.55rem 0.8rem;
+      background: var(--panel);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 4px 4px 0;
+      font-size: 0.95rem;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .cover {
+        transition: none;
+      }
+    }
+  </style>
 </head>
+
 <body>
-<main>
-  <h1 id="title"></h1>
-  <p class="intro" id="intro"></p>
+  <main>
+    <h1 id="title"></h1>
+    <p class="intro" id="intro"></p>
 
-  <div class="frame" id="frame">
-    <img id="prize" alt="">
-    <div class="cover"><span id="coverText"></span></div>
-  </div>
+    <div class="frame" id="frame">
+      <img id="prize" alt="">
+      <div class="cover"><span id="coverText"></span></div>
+    </div>
 
-  <form id="quiz" novalidate></form>
-  <p id="result" role="status" aria-live="polite"></p>
-</main>
+    <form id="quiz" novalidate></form>
+    <p id="result" role="status" aria-live="polite"></p>
+  </main>
 
-<script>
-/* ============================================================
-   EDIT THIS SECTION
-   ============================================================ */
-const CONFIG = {
-  title: "Answer all of them to see the picture",
-  intro: "Get every question right and the picture below will unlock.",
-  coverText: "Locked",
+  <script>
+    /* ============================================================
+       EDIT THIS SECTION
+       ============================================================ */
+    const CONFIG = {
+      title: "Answer all of them to see the picture",
+      intro: "Get every question right and the picture below will unlock.",
+      coverText: "Locked",
 
-  // Put your picture in the same folder as this file and put its file name here.
-  image: "reveal.jpg",
-  imageAlt: "The unlocked picture",
+      // Put your picture in the same folder as this file and put its file name here.
+      image: "Secret_Slug_Hunt_Yellow.png",
+      imageAlt: "A yellow power slug with a hard hat with the mood publishing logo on it",
 
-  successMessage: "All correct. Here it is.",
-  failMessage: "Not quite. Check the marked questions and try again.",
+      successMessage: "All correct. Here it is.",
+      failMessage: "Not quite. Check the marked questions and try again.",
 
-  questions: [
-    // type "text": the answer is correct if it matches any item in `answers`
-    // (ignores capitalization, extra spaces, and punctuation).
-    { type: "text",   q: "What is the capital of France?",       answers: ["paris"] },
+      questions: [
+        // Add `hint: "..."` to any question to give it a "Need a hint?" button.
+        // Leave `hint` out and that question simply has no button.
 
-    // type "choice": `answer` is the index of the correct option (0 = first).
-    { type: "choice", q: "How many days are in a leap year?",
-      options: ["365", "366", "364"], answer: 1 },
+        // type "text": the answer is correct if it matches any item in `answers`
+        // (ignores capitalization, extra spaces, and punctuation).
+        {
+          type: "text", q: "How long was the campign in endgame for?", answers: ["152h 39m", "152h 39m 03s", "6d 8h"],
+          hint: "https://satisfactory.lukeplays.de/"
+        },
 
-    { type: "text",   q: "What color do you get by mixing blue and yellow?", answers: ["green"] }
-  ]
-};
-/* ============================================================
-   END OF EDIT SECTION
-   ============================================================ */
+        // type "choice": `answer` is the index of the correct option (0 = first).
+        {
+          type: "choice", q: "What position did the campign make it in top 5 longest endgames?",
+          options: ["5", "1", "3", "4", "2"], answer: 2,
+          hint: "Check the endgame goals section on the ficsit endgame tracker."
+        },
 
-const normalize = s => s.toLowerCase().replace(/[^\p{L}\p{N}\s]/gu, "").replace(/\s+/g, " ").trim();
-
-const form = document.getElementById("quiz");
-const result = document.getElementById("result");
-const frame = document.getElementById("frame");
-const prize = document.getElementById("prize");
-
-document.getElementById("title").textContent = CONFIG.title;
-document.getElementById("intro").textContent = CONFIG.intro;
-document.getElementById("coverText").textContent = CONFIG.coverText;
-document.title = CONFIG.title;
-
-// Build the questions
-CONFIG.questions.forEach((item, i) => {
-  const wrap = document.createElement("div");
-  wrap.className = "q";
-
-  if (item.type === "choice") {
-    const fs = document.createElement("fieldset");
-    const lg = document.createElement("legend");
-    lg.textContent = item.q;
-    fs.appendChild(lg);
-    item.options.forEach((opt, j) => {
-      const label = document.createElement("label");
-      label.className = "choice";
-      const input = document.createElement("input");
-      input.type = "radio";
-      input.name = "q" + i;
-      input.value = j;
-      label.append(input, document.createTextNode(opt));
-      fs.appendChild(label);
-    });
-    wrap.appendChild(fs);
-  } else {
-    const label = document.createElement("label");
-    label.className = "q-label";
-    label.htmlFor = "q" + i;
-    label.textContent = item.q;
-    const input = document.createElement("input");
-    input.type = "text";
-    input.id = "q" + i;
-    input.autocomplete = "off";
-    wrap.append(label, input);
-  }
-
-  const note = document.createElement("p");
-  note.className = "note";
-  wrap.appendChild(note);
-  form.appendChild(wrap);
-});
-
-const submit = document.createElement("button");
-submit.type = "submit";
-submit.textContent = "Check my answers";
-form.appendChild(submit);
-
-function isCorrect(item, i) {
-  if (item.type === "choice") {
-    const picked = form.querySelector(`input[name="q${i}"]:checked`);
-    return !!picked && Number(picked.value) === item.answer;
-  }
-  const value = normalize(form.querySelector("#q" + i).value);
-  return item.answers.some(a => normalize(a) === value);
-}
-
-form.addEventListener("submit", e => {
-  e.preventDefault();
-  const blocks = form.querySelectorAll(".q");
-  let allRight = true;
-
-  CONFIG.questions.forEach((item, i) => {
-    const ok = isCorrect(item, i);
-    if (!ok) allRight = false;
-    blocks[i].classList.toggle("right", ok);
-    blocks[i].classList.toggle("wrong", !ok);
-    blocks[i].querySelector(".note").textContent = ok ? "Correct" : "Try again";
-  });
-
-  if (allRight) {
-    result.textContent = CONFIG.successMessage;
-    // The image is only attached once everything is right.
-    prize.alt = CONFIG.imageAlt;
-    prize.onerror = () => {
-      result.textContent = "All correct, but the picture file \"" + CONFIG.image + "\" wasn't found next to index.html.";
+        { type: "text", q: "How many endless mode cards did we unlock", answers: ["16"] }
+      ]
     };
-    prize.src = CONFIG.image;
-    frame.classList.add("open");
-    submit.disabled = true;
-  } else {
-    result.textContent = CONFIG.failMessage;
-  }
-});
-</script>
+    /* ============================================================
+       END OF EDIT SECTION
+       ============================================================ */
+
+    const normalize = s => s.toLowerCase().replace(/[^\p{L}\p{N}\s]/gu, "").replace(/\s+/g, " ").trim();
+
+    const form = document.getElementById("quiz");
+    const result = document.getElementById("result");
+    const frame = document.getElementById("frame");
+    const prize = document.getElementById("prize");
+
+    document.getElementById("title").textContent = CONFIG.title;
+    document.getElementById("intro").textContent = CONFIG.intro;
+    document.getElementById("coverText").textContent = CONFIG.coverText;
+    document.title = CONFIG.title;
+
+    // Build the questions
+    CONFIG.questions.forEach((item, i) => {
+      const wrap = document.createElement("div");
+      wrap.className = "q";
+
+      if (item.type === "choice") {
+        const fs = document.createElement("fieldset");
+        const lg = document.createElement("legend");
+        lg.textContent = item.q;
+        fs.appendChild(lg);
+        item.options.forEach((opt, j) => {
+          const label = document.createElement("label");
+          label.className = "choice";
+          const input = document.createElement("input");
+          input.type = "radio";
+          input.name = "q" + i;
+          input.value = j;
+          label.append(input, document.createTextNode(opt));
+          fs.appendChild(label);
+        });
+        wrap.appendChild(fs);
+      } else {
+        const label = document.createElement("label");
+        label.className = "q-label";
+        label.htmlFor = "q" + i;
+        label.textContent = item.q;
+        const input = document.createElement("input");
+        input.type = "text";
+        input.id = "q" + i;
+        input.autocomplete = "off";
+        wrap.append(label, input);
+      }
+
+      if (item.hint) {
+        const hintBtn = document.createElement("button");
+        hintBtn.type = "button";
+        hintBtn.className = "hint-btn";
+        hintBtn.textContent = "Need a hint?";
+        hintBtn.setAttribute("aria-expanded", "false");
+        const hintText = document.createElement("p");
+        hintText.className = "hint-text";
+        hintText.id = "hint" + i;
+        hintText.textContent = item.hint;
+        hintText.hidden = true;
+        hintBtn.setAttribute("aria-controls", hintText.id);
+        hintBtn.addEventListener("click", () => {
+          const show = hintText.hidden;
+          hintText.hidden = !show;
+          hintBtn.textContent = show ? "Hide hint" : "Need a hint?";
+          hintBtn.setAttribute("aria-expanded", String(show));
+        });
+        wrap.append(hintBtn, hintText);
+      }
+
+      const note = document.createElement("p");
+      note.className = "note";
+      wrap.appendChild(note);
+      form.appendChild(wrap);
+    });
+
+    const submit = document.createElement("button");
+    submit.type = "submit";
+    submit.textContent = "Check my answers";
+    form.appendChild(submit);
+
+    function isCorrect(item, i) {
+      if (item.type === "choice") {
+        const picked = form.querySelector(`input[name="q${i}"]:checked`);
+        return !!picked && Number(picked.value) === item.answer;
+      }
+      const value = normalize(form.querySelector("#q" + i).value);
+      return item.answers.some(a => normalize(a) === value);
+    }
+
+    form.addEventListener("submit", e => {
+      e.preventDefault();
+      const blocks = form.querySelectorAll(".q");
+      let allRight = true;
+
+      CONFIG.questions.forEach((item, i) => {
+        const ok = isCorrect(item, i);
+        if (!ok) allRight = false;
+        blocks[i].classList.toggle("right", ok);
+        blocks[i].classList.toggle("wrong", !ok);
+        blocks[i].querySelector(".note").textContent = ok ? "Correct" : "Try again";
+      });
+
+      if (allRight) {
+        result.textContent = CONFIG.successMessage;
+        // The image is only attached once everything is right.
+        prize.alt = CONFIG.imageAlt;
+        prize.onerror = () => {
+          result.textContent = "All correct, but the picture file \"" + CONFIG.image + "\" wasn't found next to index.html.";
+        };
+        prize.src = CONFIG.image;
+        frame.classList.add("open");
+        submit.disabled = true;
+      } else {
+        result.textContent = CONFIG.failMessage;
+      }
+    });
+  </script>
 </body>
+
 </html>
