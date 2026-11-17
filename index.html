@@ -10,239 +10,153 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap"
     rel="stylesheet">
-  <style>
-    :root {
-      --paper: #e9efe7;
-      --ink: #1c3a33;
-      --muted: #5b7068;
-      --line: #b9c8bf;
-      --accent: #e4572e;
-      --good: #2f7d55;
-      --bad: #b3341b;
-      --panel: #f6f9f4;
-    }
-
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --paper: #14221e;
-        --ink: #e4eee8;
-        --muted: #9bb0a6;
-        --line: #2f4a41;
-        --accent: #ff7a50;
-        --good: #6cd09a;
-        --bad: #ff8d74;
-        --panel: #1b2d28;
-      }
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    html {
-      background: var(--paper);
-    }
-
-    body {
-      margin: 0;
-      font-family: "Bricolage Grotesque", system-ui, -apple-system, "Segoe UI", sans-serif;
-      color: var(--ink);
-      line-height: 1.5;
-      padding: 2.5rem 1.25rem 4rem;
-    }
-
-    main {
-      max-width: 38rem;
-      margin: 0 auto;
-    }
-
-    h1 {
-      font-size: clamp(2rem, 7vw, 3.1rem);
-      line-height: 1.05;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      margin: 0 0 0.6rem;
-    }
-
-    .intro {
-      color: var(--muted);
-      margin: 0 0 2rem;
-      max-width: 34rem;
-    }
-
-    /* The frame: covered until every answer is right */
-    .frame {
-      position: relative;
-      aspect-ratio: 4 / 3;
-      border: 2px solid var(--ink);
-      border-radius: 6px;
-      overflow: hidden;
-      margin-bottom: 2.25rem;
-      background: var(--panel);
-    }
-
-    .frame img {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .cover {
-      position: absolute;
-      inset: 0;
-      display: grid;
-      place-items: center;
-      background:
-        repeating-linear-gradient(135deg, transparent 0 14px, color-mix(in srgb, var(--ink) 9%, transparent) 14px 16px),
-        var(--panel);
-      color: var(--muted);
-      text-align: center;
-      transition: transform 1.1s cubic-bezier(.7, 0, .2, 1);
-    }
-
-    .cover span {
-      font-weight: 600;
-      padding: 0 1rem;
-    }
-
-    .frame.open .cover {
-      transform: translateY(-101%);
-    }
-
-    form {
-      display: grid;
-      gap: 1.6rem;
-    }
-
-    fieldset {
-      border: 0;
-      padding: 0;
-      margin: 0;
-    }
-
-    legend,
-    .q-label {
-      font-weight: 600;
-      font-size: 1.1rem;
-      padding: 0;
-      margin-bottom: 0.6rem;
-      display: block;
-    }
-
-    .q {
-      padding-left: 1rem;
-      border-left: 3px solid var(--line);
-      transition: border-color .2s;
-    }
-
-    .q.right {
-      border-left-color: var(--good);
-    }
-
-    .q.wrong {
-      border-left-color: var(--bad);
-    }
-
-    input[type="text"] {
-      width: 100%;
-      font: inherit;
-      color: inherit;
-      background: var(--panel);
-      border: 1.5px solid var(--line);
-      border-radius: 4px;
-      padding: 0.6rem 0.75rem;
-    }
-
-    .choice {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      padding: 0.45rem 0;
-      cursor: pointer;
-    }
-
-    .choice input {
-      accent-color: var(--accent);
-      width: 1.1rem;
-      height: 1.1rem;
-    }
-
-    :focus-visible {
-      outline: 3px solid var(--accent);
-      outline-offset: 2px;
-    }
-
-    .note {
-      min-height: 1.4em;
-      font-size: 0.95rem;
-      margin: 0.4rem 0 0;
-    }
-
-    .right .note {
-      color: var(--good);
-    }
-
-    .wrong .note {
-      color: var(--bad);
-    }
-
-    button {
-      font: inherit;
-      font-weight: 700;
-      background: var(--ink);
-      color: var(--paper);
-      border: 0;
-      border-radius: 4px;
-      padding: 0.8rem 1.5rem;
-      cursor: pointer;
-      justify-self: start;
-    }
-
-    button:hover {
-      background: var(--accent);
-      color: #fff;
-    }
-
-    #result {
-      margin: 0;
-      font-weight: 600;
-      min-height: 1.5em;
-    }
-
-    .hint-btn {
-      background: none;
-      color: var(--muted);
-      border: 1.5px dashed var(--line);
-      padding: 0.3rem 0.8rem;
-      font-weight: 600;
-      font-size: 0.9rem;
-      margin-top: 0.5rem;
-    }
-
-    .hint-btn:hover {
-      background: none;
-      color: var(--accent);
-      border-color: var(--accent);
-    }
-
-    .hint-text {
-      margin: 0.5rem 0 0;
-      padding: 0.55rem 0.8rem;
-      background: var(--panel);
-      border-left: 3px solid var(--accent);
-      border-radius: 0 4px 4px 0;
-      font-size: 0.95rem;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .cover {
-        transition: none;
-      }
-    }
-  </style>
+<style>
+  :root {
+    color-scheme: dark;
+    --paper: #1d2024;      /* factory-floor dark */
+    --panel: #2a2e33;      /* steel panel */
+    --ink: #ece7dc;        /* warm off-white */
+    --muted: #a3a8ad;
+    --line: #444a51;
+    --accent: #f59a23;     /* FICSIT orange */
+    --accent-ink: #1d2024;
+    --good: #7bd88f;
+    --bad: #ff6b5e;
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--paper); }
+  body {
+    margin: 0;
+    font-family: "Barlow", system-ui, -apple-system, "Segoe UI", sans-serif;
+    color: var(--ink);
+    line-height: 1.5;
+    padding: 2.5rem 1.25rem 4rem;
+  }
+  main { max-width: 38rem; margin: 0 auto; }
+  h1, legend, .q-label, button, .cover span {
+    font-family: "Barlow Condensed", "Arial Narrow", system-ui, sans-serif;
+  }
+  h1 {
+    font-size: clamp(2.2rem, 8vw, 3.4rem);
+    line-height: 1;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    margin: 0 0 0.7rem;
+    padding-bottom: 0.7rem;
+    border-bottom: 4px solid var(--accent);
+  }
+  .intro { color: var(--muted); margin: 0 0 2rem; max-width: 34rem; }
+ 
+  /* The frame: covered by hazard stripes until every answer is right */
+  .frame {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    border: 3px solid var(--accent);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 2.25rem;
+    background: var(--panel);
+  }
+  .frame img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .cover {
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    background: repeating-linear-gradient(45deg, var(--accent) 0 22px, var(--paper) 22px 44px);
+    transition: transform 1.1s cubic-bezier(.7, 0, .2, 1);
+  }
+  .cover span {
+    background: var(--paper);
+    color: var(--accent);
+    border: 2px solid var(--accent);
+    padding: 0.5rem 1.6rem;
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+  }
+  .frame.open .cover { transform: translateY(-101%); }
+ 
+  form { display: grid; gap: 1.6rem; }
+  fieldset { border: 0; padding: 0; margin: 0; }
+  legend, .q-label {
+    font-weight: 600;
+    font-size: 1.35rem;
+    letter-spacing: 0.01em;
+    padding: 0;
+    margin-bottom: 0.6rem;
+    display: block;
+  }
+  .q {
+    padding: 0.9rem 1rem 1rem;
+    background: var(--panel);
+    border-left: 4px solid var(--line);
+    border-radius: 0 3px 3px 0;
+    transition: border-color .2s;
+  }
+  .q.right { border-left-color: var(--good); }
+  .q.wrong { border-left-color: var(--bad); }
+ 
+  input[type="text"] {
+    width: 100%;
+    font: inherit;
+    color: inherit;
+    background: var(--paper);
+    border: 1.5px solid var(--line);
+    border-radius: 3px;
+    padding: 0.6rem 0.75rem;
+  }
+  .choice {
+    display: flex; align-items: center; gap: 0.6rem;
+    padding: 0.45rem 0;
+    cursor: pointer;
+  }
+  .choice input { accent-color: var(--accent); width: 1.1rem; height: 1.1rem; }
+ 
+  :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+ 
+  .note { min-height: 1.4em; font-size: 0.95rem; margin: 0.4rem 0 0; }
+  .right .note { color: var(--good); }
+  .wrong .note { color: var(--bad); }
+ 
+  button {
+    font-weight: 700;
+    font-size: 1.15rem;
+    letter-spacing: 0.04em;
+    background: var(--accent); color: var(--accent-ink);
+    border: 0; border-radius: 3px;
+    padding: 0.7rem 1.6rem;
+    cursor: pointer;
+    justify-self: start;
+  }
+  button:hover { background: #ffb44d; }
+  button:disabled { background: var(--line); color: var(--muted); cursor: default; }
+  #result { margin: 0; font-weight: 600; min-height: 1.5em; font-size: 1.05rem; }
+ 
+  .hint-btn {
+    background: none; color: var(--muted);
+    border: 1.5px dashed var(--line);
+    padding: 0.25rem 0.8rem;
+    font-weight: 600; font-size: 1rem;
+    margin-top: 0.5rem;
+  }
+  .hint-btn:hover { background: none; color: var(--accent); border-color: var(--accent); }
+  .hint-text {
+    margin: 0.5rem 0 0;
+    padding: 0.55rem 0.8rem;
+    background: var(--paper);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 3px 3px 0;
+    font-size: 0.95rem;
+  }
+ 
+  @media (prefers-reduced-motion: reduce) {
+    .cover { transition: none; }
+  }
+</style>
 </head>
 
 <body>
@@ -258,14 +172,14 @@
     <form id="quiz" novalidate></form>
     <p id="result" role="status" aria-live="polite"></p>
   </main>
-  <!-- hi to anyone reading this and this can also be concidered cheating -->
+  <!-- hi to anyone reading this and this can also be concidered cheating. also i did use claude to make this as i did't have the time or the skills to make the js myself -->
 
   <script>
     /* ============================================================
        EDIT THIS SECTION
        ============================================================ */
     const CONFIG = {
-      title: "Answer all of them to see the picture",
+      title: "Answer all the questions to unlock the slug.",
       intro: "Get every question right and the picture below will unlock.",
       coverText: "Locked",
 
